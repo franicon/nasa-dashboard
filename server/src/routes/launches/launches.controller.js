@@ -7,7 +7,8 @@ function httpGetAllLaunches(req, res) {
 function httpAddNewLaunch(req, res) {
     const launch = req.body;
     launch.launchDate = new Date(launch.launchDate);
-    res.status(201).json(addNewLaunch(launch));
+    addNewLaunch(launch);
+    res.status(201).json(launch);
 }
 
 module.exports = {
