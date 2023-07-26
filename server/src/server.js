@@ -6,7 +6,7 @@ const { loadPlanetData } = require('./models/planets.model');
 
 const PORT = process.env.PORT || 8000;
 
-const MONGO_URL = 'mongodb://localhost:27016'
+const MONGO_URL = 'mongodb://localhost:27016/nasa'
 
 const server = http.createServer(app);
 
