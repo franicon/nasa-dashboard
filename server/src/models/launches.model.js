@@ -30,7 +30,7 @@ async function getAllLaunches() {
     });
 }
 
-async function getLatestFlightNumber() {
+async function getLatestFlightNumber () {
     const latestLaunch = await launchesDb.findOne().sort('-flightNumber');
     if (!latestLaunch) {
         return  DEFAULT_FLIGHT_NUMBER
@@ -38,7 +38,7 @@ async function getLatestFlightNumber() {
     return latestLaunch.flightNumber;
 }
 
-async function saveLaunch(launch) {
+async function saveLaunch (launch) {
     const planet = await planets.findOne({kepler_name: launch.target});
 
     if (!planet) {
@@ -52,16 +52,16 @@ async function saveLaunch(launch) {
     });
 }
 
-function addNewLaunch(launch) {
-    latestFlightNumber++;
-    return launches.set(
-        latestFlightNumber,
-        Object.assign(launch, {
-            flightNumber: latestFlightNumber,
-            customers: ['ZTM', 'NASA'],
-            upcoming: true,
-            success: true
-        }));
+async function scheduleNewLaunch (launch) {
+    const newFlightNumber = await  getLatestFlightNumber() +1;
+    const newLaunch = Object.assign(launch, {
+        success: true,
+        upcoming: true,
+        flightNumber: newFlightNumber,
+        customers: ['Zero to mastery', 'NASA']
+    });
+
+    await saveLaunch(newLaunch);
 }
 
 function abortLaunchById(launchId) {
@@ -72,8 +72,8 @@ function abortLaunchById(launchId) {
 }
 
 module.exports = {
-    addNewLaunch,
     getAllLaunches,
     abortLaunchById,
+    scheduleNewLaunch,
     existsLaunchWithId,
 }
